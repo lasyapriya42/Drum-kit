@@ -1,10 +1,21 @@
+// Detecting button click
 for (var i = 0; i < document.querySelectorAll("button").length; i++) {
-    document.querySelectorAll("button")[i].addEventListener("click", handleClick);
+    document.querySelectorAll("button")[i].addEventListener("click", function () {
+        var buttonSound = this.innerHTML;
+        playSound(buttonSound);
+        buttonAnimation(buttonSound);
+    });
 }
 
-function handleClick() {
-    var buttonsound = this.innerHTML;
-    switch (buttonsound) {
+// Detecting keypress
+document.addEventListener("keydown", function (event) {
+    playSound(event.key);
+    buttonAnimation(event.key);
+});
+
+// Function to play sound based on key or button
+function playSound(key) {
+    switch (key) {
         case "w":
             var audio = new Audio("sounds/tom-1.mp3");
             audio.play();
@@ -32,8 +43,19 @@ function handleClick() {
         case "l":
             var audio = new Audio("sounds/kick-bass.mp3");
             audio.play();
-            break;  
+            break;
         default:
-            console.log("No sound for this button");
+            console.log("No sound for this key: " + key);
+    }
+}
+
+// Function to add animation to the button
+function buttonAnimation(currentKey) {
+    var activeButton = document.querySelector("." + currentKey);
+    if (activeButton) {
+        activeButton.classList.add("pressed");
+        setTimeout(function () {
+            activeButton.classList.remove("pressed");
+        }, 100);
     }
 }
